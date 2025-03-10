@@ -34,6 +34,10 @@ public class HomeActivity extends AppCompatActivity {
                     setFragment(new CustomersFragment());
                     return true;
                 }
+                if (item.getItemId() == R.id.menuCategories) {
+                    setFragment(new CategoryFragment());
+                    return true;
+                }
 
                 return false;
             }
