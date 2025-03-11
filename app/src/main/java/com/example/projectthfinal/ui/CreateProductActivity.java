@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +30,7 @@ import java.io.InputStream;
 
 public class CreateProductActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
+    Spinner spnCate;
     EditText edtCreateName, edtCreateDes, edtCreatePrice, edtCreateStock;
     ImageButton imageCreate;
     Button btnCreate;

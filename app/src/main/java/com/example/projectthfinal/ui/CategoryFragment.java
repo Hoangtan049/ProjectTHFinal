@@ -73,20 +73,23 @@ public class CategoryFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_category, container, false);
-        recyclerView=v.findViewById(R.id.rcl_category);
+        recyclerView = v.findViewById(R.id.rcl_category);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        userDAO = new UserDAO(getContext());
         loadCategory();
         return v;
     }
+
     private void loadCategory() {
-        List<Categories> categoriesList= userDAO.getAllCate();
-        categoriesAdapter= new CategoriesAdapter(getContext(),categoriesList);
+        List<Categories> categoriesList = userDAO.getAllCate();
+        categoriesAdapter = new CategoriesAdapter(getContext(), categoriesList);
         recyclerView.setAdapter(categoriesAdapter);
     }
 
@@ -95,6 +98,7 @@ public class CategoryFragment extends Fragment {
         super.onResume();
         loadCategory();
     }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.add, menu);
@@ -104,7 +108,7 @@ public class CategoryFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.iconadd) {
-            Intent intent = new Intent(getActivity(), CreateProductActivity.class);
+            Intent intent = new Intent(getActivity(), CreateCategoryActivity.class);
             startActivity(intent);
             return true;
         }

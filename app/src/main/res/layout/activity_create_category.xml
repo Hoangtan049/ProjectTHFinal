@@ -1,34 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.CreateCategoryActivity">
-
-    <com.google.android.material.appbar.AppBarLayout
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="32sp"
+        android:gravity="center"
+        android:text="Create Category" />
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.ProjectTHFinal.AppBarOverlay">
+        android:layout_marginLeft="8dp"
+        android:orientation="horizontal">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Name" />
+
+        <EditText
+            android:id="@+id/edtNameCate"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.ProjectTHFinal.PopupOverlay" />
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="Name" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </LinearLayout>
 
-    <include layout="@layout/content_create_category" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+    <TextView
+        android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:layout_marginLeft="8dp"
+        android:textSize="16sp"
+        android:text="Image :" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <ImageButton
+        android:id="@+id/imageCreateCate"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginLeft="8dp"
+        tools:srcCompat="@android:drawable/ic_menu_camera" />
+
+
+    <Button
+        android:id="@+id/btnCreateCate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create" />
+</LinearLayout>

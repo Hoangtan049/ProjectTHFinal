@@ -15,7 +15,7 @@
         android:theme="@style/Theme.ProjectTHFinal"
         tools:targetApi="31">
         <activity
-            android:name=".CreateCategoryActivity"
+            android:name=".ui.CreateCategoryActivity"
             android:exported="false"
             android:label="@string/title_activity_create_category"
             android:theme="@style/Theme.ProjectTHFinal.NoActionBar" />
