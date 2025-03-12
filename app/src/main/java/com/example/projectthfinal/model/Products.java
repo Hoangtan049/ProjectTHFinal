@@ -1,23 +1,26 @@
 package com.example.projectthfinal.model;
 
 public class Products {
-    private int id;
-    private String name;
-    private String  description;
-    private double price;
-    private int stock;
-    private String imageName;
-
+    int id;
+    String name;
+    String  description;
+    double price;
+    int stock;
+    String imageName;
+    int categoryId;
+    String categoryName;
     public Products() {
     }
 
-    public Products(int id, String name, String description, double price, int stock, String imageName) {
+    public Products(int id, String name, String description, double price, int stock, String imageName, int categoryId, String categoryName) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
         this.imageName = imageName;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
     }
 
     public int getId() {
@@ -68,15 +71,33 @@ public class Products {
         this.imageName = imageName;
     }
 
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     @Override
     public String toString() {
         return "Products{" +
                 "id=" + id +
-                ", stock=" + stock +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", imageName='" + imageName + '\'' +
                 ", price=" + price +
+                ", stock=" + stock +
+                ", imageName='" + imageName + '\'' +
+                ", categoryId=" + categoryId +
+                ", categoryName='" + categoryName + '\'' +
                 '}';
     }
 }

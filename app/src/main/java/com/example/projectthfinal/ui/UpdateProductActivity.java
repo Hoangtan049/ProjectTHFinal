@@ -12,28 +12,34 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.projectthfinal.R;
+import com.example.projectthfinal.model.Categories;
 import com.example.projectthfinal.utils.UserDAO;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UpdateProductActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     EditText edtUpdateName, edtUpdateDes, edtUpdatePrice, edtUpdateStock;
     ImageButton btnImage;
-    int productId;
+    int productId,categoryId;
+    Spinner spnUpdateCate;
     Button btnUpdate;
     Uri imageUri;
-
+    List<Categories> categoriesList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,14 +50,16 @@ public class UpdateProductActivity extends AppCompatActivity {
         edtUpdateStock = findViewById(R.id.edtUpdateStock);
         btnImage = findViewById(R.id.imageUpdate);
         btnUpdate = findViewById(R.id.btnUpdateProduct);
+        spnUpdateCate=findViewById(R.id.spnUpdateCate);
 
         Intent intent = getIntent();
         productId = intent.getIntExtra("product_id", -1);
         String productName = intent.getStringExtra("product_name");
-        String productDes = intent.getStringExtra("product_desription");
+        String productDes = intent.getStringExtra("product_description");
         double productPrice = intent.getDoubleExtra("product_price", 0);
         int productStock = intent.getIntExtra("product_stock", 0);
         String imagepath = intent.getStringExtra("product_image");
+        categoryId=intent.getIntExtra("product_category_id",-1);
         edtUpdateName.setText(productName);
         edtUpdateDes.setText(productDes);
         edtUpdatePrice.setText(productPrice + "");
@@ -60,6 +68,7 @@ public class UpdateProductActivity extends AppCompatActivity {
             imageUri = Uri.parse(imagepath);
             Glide.with(this).load(imageUri).into(btnImage);
         }
+        loadCategories();
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,14 +82,31 @@ public class UpdateProductActivity extends AppCompatActivity {
                 String newDes = edtUpdateDes.getText().toString().trim();
                 double newPrice = Double.parseDouble(edtUpdatePrice.getText().toString());
                 int newStock = Integer.parseInt(edtUpdateStock.getText().toString());
+                int selectedCategoryId = categoriesList.get(spnUpdateCate.getSelectedItemPosition()).getId();
                 UserDAO userDAO = new UserDAO(UpdateProductActivity.this);
-                userDAO.updateProduct(productId, newName, newDes, newPrice, newStock, imageUri != null ? imageUri.toString() : null);
+                userDAO.updateProduct(productId, newName, newDes, newPrice, newStock, imageUri != null ? imageUri.toString() : null,selectedCategoryId);
                 Toast.makeText(UpdateProductActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
     }
+    private void loadCategories() {
+        UserDAO userDAO = new UserDAO(this);
+        categoriesList = userDAO.getAllCate();
+        List<String> categoryNames = new ArrayList<>();
 
+        int selectedPosition = 0;
+        for (int i = 0; i < categoriesList.size(); i++) {
+            categoryNames.add(categoriesList.get(i).getName());
+            if (categoriesList.get(i).getId() == categoryId) {
+                selectedPosition = i;
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categoryNames);
+        spnUpdateCate.setAdapter(adapter);
+        spnUpdateCate.setSelection(selectedPosition); // Đặt danh mục hiện tại làm mặc định
+    }
     private void openAsset() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);

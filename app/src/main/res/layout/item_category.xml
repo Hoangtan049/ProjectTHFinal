@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/cateImg"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
         android:layout_weight="1"
         tools:srcCompat="@tools:sample/avatars"
         android:layout_margin="8dp"
@@ -30,5 +30,28 @@
             android:layout_height="wrap_content"
             android:textSize="36sp"
             android:text="TextView" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnDeleteCate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                app:srcCompat="@android:drawable/ic_delete" />
+
+            <ImageButton
+                android:id="@+id/btnUpdateCate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                app:srcCompat="@android:drawable/ic_popup_sync" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

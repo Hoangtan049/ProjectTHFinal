@@ -45,6 +45,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
         holder.txtDes.setText(products.getDescription());
         holder.txtPrice.setText(products.getPrice()+"VND");
         holder.txtStock.setText(products.getStock()+"");
+        holder.txtCate.setText(products.getCategoryName());
         Uri imageUri = Uri.parse(products.getImageName());
         Glide.with(context).load(imageUri).into(holder.imageProduct);
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -65,10 +66,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
                 Intent intent = new Intent(context, UpdateProductActivity.class);
                 intent.putExtra("product_id",currentProduct.getId());
                 intent.putExtra("product_name",currentProduct.getName());
-                intent.putExtra("product_desription",currentProduct.getDescription());
+                intent.putExtra("product_description",currentProduct.getDescription());
                 intent.putExtra("product_price",currentProduct.getPrice());
                 intent.putExtra("product_stock",currentProduct.getStock());
                 intent.putExtra("product_image",currentProduct.getImageName());
+                intent.putExtra("product_category_id",currentProduct.getCategoryId());
+                intent.putExtra("product_category_name",currentProduct.getCategoryName());
                 context.startActivity(intent);
             }
         });
@@ -82,7 +85,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
 
     public class ProductHolder extends RecyclerView.ViewHolder {
         ImageView imageProduct;
-        TextView txtName,txtDes,txtPrice,txtStock;
+        TextView txtName,txtDes,txtPrice,txtStock,txtCate;
         ImageButton btnDelete,btnUpdate;
 
         public ProductHolder(@NonNull View itemView) {
@@ -92,6 +95,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
             txtDes=itemView.findViewById(R.id.txtDes);
             txtPrice=itemView.findViewById(R.id.txtPrice);
             txtStock=itemView.findViewById(R.id.txtStock);
+            txtCate=itemView.findViewById(R.id.txtCate);
             btnUpdate=itemView.findViewById(R.id.btnUpdate);
             btnDelete=itemView.findViewById(R.id.btnDelete);
         }

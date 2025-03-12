@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,12 +22,15 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.projectthfinal.R;
 import com.example.projectthfinal.database.OnlineStoreDatabaseHelper;
+import com.example.projectthfinal.model.Categories;
 import com.example.projectthfinal.utils.UserDAO;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateProductActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -36,7 +40,7 @@ public class CreateProductActivity extends AppCompatActivity {
     Button btnCreate;
     Uri imageUri;
     OnlineStoreDatabaseHelper databaseHelper;
-
+    List<Categories> categories;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +51,9 @@ public class CreateProductActivity extends AppCompatActivity {
         edtCreatePrice = findViewById(R.id.edtCreatePrice);
         edtCreateStock = findViewById(R.id.edtCreateStock);
         imageCreate = findViewById(R.id.imageCreate);
+        spnCate=findViewById(R.id.spnCate);
         btnCreate = findViewById(R.id.btnCreate);
+        loadCategories();
         imageCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,12 +67,15 @@ public class CreateProductActivity extends AppCompatActivity {
                 String Des = edtCreateDes.getText().toString().trim();
                 double price = Double.parseDouble(edtCreatePrice.getText().toString().trim());
                 int stock = Integer.parseInt(edtCreateStock.getText().toString().trim());
+                String categoryName =spnCate.getSelectedItem().toString();
+                int selectedCategoryId = categories.get(spnCate.getSelectedItemPosition()).getId();
                 if (imageUri  == null) {
                     Toast.makeText(CreateProductActivity.this, "Vui lòng chọn hình ảnh!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 UserDAO userDAO = new UserDAO(CreateProductActivity.this);
-                boolean isAdded = userDAO.addProduct(Name, Des, price, stock, imageUri.toString());
+
+                boolean isAdded = userDAO.addProduct(Name, Des, price, stock, imageUri.toString(),selectedCategoryId);
                 if (isAdded) {
                     Toast.makeText(CreateProductActivity.this, "Thêm sản phẩm thành công!", Toast.LENGTH_SHORT).show();
                    finish();
@@ -77,7 +86,16 @@ public class CreateProductActivity extends AppCompatActivity {
             }
         });
     }
-
+    private  void  loadCategories(){
+        UserDAO userDAO= new UserDAO(this);
+        categories=userDAO.getAllCate();
+        List<String> categoryName=new ArrayList<>();
+        for(Categories category:categories){
+            categoryName.add(category.getName());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,categoryName);
+        spnCate.setAdapter(adapter);
+    }
     private void openAsset() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);

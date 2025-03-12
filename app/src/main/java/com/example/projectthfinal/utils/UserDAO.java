@@ -58,7 +58,7 @@ public class UserDAO {
         return categoriesList;
     }
 
-    public boolean addProduct(String name, String description, double price, int stock, String imagePath) {
+    public boolean addProduct(String name, String description, double price, int stock, String imagePath,int categoryId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", name);
@@ -66,11 +66,12 @@ public class UserDAO {
         values.put("price", price);
         values.put("stock", stock);
         values.put("image", imagePath);
+        values.put("category_id", categoryId);
         long result = db.insert("Products", null, values);
         return result != -1;
     }
 
-    public void updateProduct(int productId, String name, String description, double price, int stock, String imagePath) {
+    public void updateProduct(int productId, String name, String description, double price, int stock, String imagePath,int categoryId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", name);
@@ -78,6 +79,7 @@ public class UserDAO {
         values.put("price", price);
         values.put("stock", stock);
         values.put("image", imagePath);
+        values.put("category_id", categoryId);
         db.update("Products", values, "id=?", new String[]{String.valueOf(productId)});
         db.close();
     }
@@ -92,7 +94,10 @@ public class UserDAO {
     public List<Products> getallProduct() {
         List<Products> productsList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Products", null);
+        Cursor cursor = db.rawQuery(
+                "SELECT p.id, p.name, p.description, p.price, p.stock, p.image, p.category_id, c.name as category_name " +
+                        "FROM Products p " +
+                        "JOIN Categories c ON p.category_id = c.id", null);
         if ((cursor.moveToFirst())) {
             do {
                 int id = cursor.getInt(0);
@@ -101,7 +106,9 @@ public class UserDAO {
                 double price = cursor.getDouble(3);
                 int stock = cursor.getInt(4);
                 String imagePath = cursor.getString(5);
-                productsList.add(new Products(id, name, description, price, stock, imagePath));
+                int categoryId = cursor.getInt(6);
+                String categoryName=cursor.getString(7);
+                productsList.add(new Products(id, name, description, price, stock, imagePath,categoryId,categoryName));
 
             } while (cursor.moveToNext());
 

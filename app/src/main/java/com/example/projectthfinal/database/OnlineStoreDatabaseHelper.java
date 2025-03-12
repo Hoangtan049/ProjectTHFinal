@@ -35,7 +35,7 @@ public class OnlineStoreDatabaseHelper extends SQLiteOpenHelper {
             "price REAL NOT NULL, " +
             "stock INTEGER NOT NULL DEFAULT 0,"+
             "image TEXT NOT NULL, " +
-            "category_id INTEGER, " + // Thêm khóa ngoại thể loại
+            "category_id INTEGER, " +
             "FOREIGN KEY (category_id) REFERENCES Categories(id) ON DELETE CASCADE);";
     // Bảng Categories
     private static final String CREATE_CATEGORIES_TABLE = "CREATE TABLE Categories (" +

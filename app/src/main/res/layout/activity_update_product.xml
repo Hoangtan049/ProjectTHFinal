@@ -32,7 +32,13 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Name :" />
-
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Category :" />
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
@@ -72,7 +78,13 @@
                 android:ems="10"
                 android:hint="Name"
                 android:inputType="textPersonName" />
-
+            <Spinner
+                android:id="@+id/spnUpdateCate"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:ems="10"
+                />
             <EditText
                 android:id="@+id/edtUpdateDes"
                 android:layout_width="match_parent"
