@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class OnlineStoreDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "OnlineStore.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
 
     // Bảng Users
     private static final String CREATE_USERS_TABLE = "CREATE TABLE Users (" +
@@ -45,11 +45,11 @@ public class OnlineStoreDatabaseHelper extends SQLiteOpenHelper {
     // Bảng Orders
     private static final String CREATE_ORDERS_TABLE = "CREATE TABLE Orders (" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "customer_id INTEGER NOT NULL, " +
+            "user_id INTEGER NOT NULL, " +
             "order_date TEXT DEFAULT CURRENT_TIMESTAMP, " +
             "total_price REAL NOT NULL, " +
             "status TEXT CHECK(status IN ('pending', 'completed', 'canceled')) NOT NULL DEFAULT 'pending', " +
-            "FOREIGN KEY (customer_id) REFERENCES Customers(id) ON DELETE CASCADE);";
+            "FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE);";
 
     // Bảng OrderDetails
     private static final String CREATE_ORDER_DETAILS_TABLE = "CREATE TABLE OrderDetails (" +
@@ -74,20 +74,26 @@ public class OnlineStoreDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_CATEGORIES_TABLE);
         db.execSQL(CREATE_ORDERS_TABLE);
         db.execSQL(CREATE_ORDER_DETAILS_TABLE);
+        db.execSQL("INSERT INTO Users (username, password, email, role) " +
+                "VALUES ('admin', 'admin123', 'admin@example.com', 'admin');");
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        db.execSQL("DROP TABLE IF EXISTS Users");
-//        db.execSQL("DROP TABLE IF EXISTS Customers");
-//        db.execSQL("DROP TABLE IF EXISTS Products");
-//        db.execSQL("DROP TABLE IF EXISTS Orders");
-//        db.execSQL("DROP TABLE IF EXISTS OrderDetails");
-//        db.execSQL("ALTER TABLE Products RENAME COLUMN image TO imagePath;");
+
         if (oldVersion < 3) { // Kiểm tra nếu database cũ không có bảng Categories
             db.execSQL(CREATE_CATEGORIES_TABLE);
             db.execSQL("ALTER TABLE Products ADD COLUMN category_id INTEGER REFERENCES Categories(id) ON DELETE SET NULL;");
         }
-//        onCreate(db);
+        if (oldVersion < 4) { // Nếu nâng cấp từ phiên bản cũ lên 4
+            db.execSQL("INSERT OR IGNORE INTO Users (username, password, email, role) " +
+                    "VALUES ('admin', 'admin123', 'admin@example.com', 'admin');");
+        }
+        if (oldVersion < 5) {
+            db.execSQL("DROP TABLE IF EXISTS Customers");
+            db.execSQL("ALTER TABLE Orders RENAME COLUMN customer_id TO user_id;");
+        }
+
     }
 }

@@ -19,7 +19,9 @@ import com.example.projectthfinal.ui.UpdateProductActivity;
 import com.example.projectthfinal.utils.UserDAO;
 
 import java.io.File;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductHolder> {
     Context context;
@@ -43,7 +45,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
         Products products= list.get(position);
         holder.txtName.setText(products.getName());
         holder.txtDes.setText(products.getDescription());
-        holder.txtPrice.setText(products.getPrice()+"VND");
+        NumberFormat formatter = NumberFormat.getInstance(Locale.US);
+        String formattedPrice = formatter.format(products.getPrice()) + " VND";
+        holder.txtPrice.setText(formattedPrice);
         holder.txtStock.setText(products.getStock()+"");
         holder.txtCate.setText(products.getCategoryName());
         Uri imageUri = Uri.parse(products.getImageName());
