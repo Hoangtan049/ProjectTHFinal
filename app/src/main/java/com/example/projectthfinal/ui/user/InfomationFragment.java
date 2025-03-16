@@ -1,16 +1,20 @@
 package com.example.projectthfinal.ui.user;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.projectthfinal.MainActivity;
 import com.example.projectthfinal.R;
 import com.example.projectthfinal.model.User;
 import com.example.projectthfinal.utils.UserDAO;
@@ -22,6 +26,7 @@ import com.example.projectthfinal.utils.UserDAO;
  */
 public class InfomationFragment extends Fragment {
 TextView txtUsername,txtEmail,txtRole;
+Button btnLogoutUser;
 UserDAO userDAO;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,6 +76,23 @@ UserDAO userDAO;
         txtRole=v.findViewById(R.id.txtRole);
         txtEmail=v.findViewById(R.id.txtEmail);
         txtUsername=v.findViewById(R.id.txtUsername);
+        btnLogoutUser=v.findViewById(R.id.btnLogoutUser);
+        btnLogoutUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Đăng Xuất")
+                        .setMessage("Bạn có chắc chắn muốn đăng xuất không?")
+                        .setPositiveButton("Có", (dialog, which) -> {
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Xóa tất cả activity trước đó
+                            startActivity(intent);
+                            getActivity().finish();
+                        })
+                        .setNegativeButton("Không", (dialog, which) -> dialog.dismiss())
+                        .show();
+            }
+        });
         userDAO=new UserDAO(getActivity());
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER_PREF", Context.MODE_PRIVATE);

@@ -58,8 +58,9 @@ EditText edtUserNameLogin,edtPasswordLogin;
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putInt("user_id", user.getId());
                     editor.putString("username", user.getUsername());
+                    editor.putString("role",user.getRole());
                     editor.apply();
-                    if (user.equals("admin")){
+                    if (user.getRole().equals("admin")){
                         startActivity(new Intent(MainActivity.this,HomeActivity.class));
                     } else {
                         startActivity(new Intent(MainActivity.this,UserActivity.class));

@@ -6,9 +6,9 @@
     tools:context=".ui.user.OrderUserFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcl_orderuser"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="UserOrder" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>

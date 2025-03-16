@@ -1,14 +1,25 @@
 package com.example.projectthfinal.ui.user;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.projectthfinal.R;
+import com.example.projectthfinal.model.OrderAdapter;
+import com.example.projectthfinal.model.Orders;
+import com.example.projectthfinal.model.ProductAdapter;
+import com.example.projectthfinal.model.Products;
+import com.example.projectthfinal.utils.UserDAO;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,7 +27,9 @@ import com.example.projectthfinal.R;
  * create an instance of this fragment.
  */
 public class OrderUserFragment extends Fragment {
-
+    RecyclerView recyclerView;
+    UserDAO userDAO;
+    OrderAdapter orderAdapter;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -61,6 +74,24 @@ public class OrderUserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_order_user, container, false);
+        View v= inflater.inflate(R.layout.fragment_order_user, container, false);
+        recyclerView=v.findViewById(R.id.rcl_orderuser);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        userDAO = new UserDAO(getContext());
+        loadOrder();
+        return v;
+    }
+    private void loadOrder() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER_PREF", Context.MODE_PRIVATE);
+        int userId= sharedPreferences.getInt("user_id",-1);
+        List<Orders> ordersList= userDAO.getOrderUser(userId);
+        orderAdapter= new OrderAdapter(getContext(),ordersList);
+        recyclerView.setAdapter(orderAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadOrder();
     }
 }

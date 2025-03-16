@@ -1,6 +1,7 @@
 package com.example.projectthfinal.model;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.projectthfinal.R;
+import com.example.projectthfinal.utils.UserDAO;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -47,10 +50,23 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
         holder.txtCateProductUser.setText(products.getCategoryName());
         Uri imageUri = Uri.parse(products.getImageName());
         Glide.with(context).load(imageUri).into(holder.imgProduct);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("USER_PREF",Context.MODE_PRIVATE);
+        int userId= sharedPreferences.getInt("user_id",-1);
         holder.btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (userId==-1){
+                    Toast.makeText(context, "Chưa Đăng Nhập", Toast.LENGTH_SHORT).show();
+                }
+                UserDAO userDAO = new UserDAO(context);
+                boolean isOrderCreate= userDAO.creatOrder(userId,products.getId(),1,products.getPrice());
+                if (isOrderCreate){
+                    Toast.makeText(context, "Mua hàng thành công chờ duyệt đơn hàng", Toast.LENGTH_LONG).show();
 
+                }
+                else {
+                    Toast.makeText(context, "Mua hàng thất bại", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
