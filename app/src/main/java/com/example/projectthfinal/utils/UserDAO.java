@@ -140,9 +140,9 @@ public class UserDAO {
                 if (orderId == -1) {
                     return false;  // Nếu lỗi, dừng lại
                 }
-                ContentValues uupdaStock = new ContentValues();
-                uupdaStock.put("stock", stock - quantity);
-                db.update("Products", uupdaStock, "id=?", new String[]{String.valueOf(productId)});
+                ContentValues updaStock = new ContentValues();
+                updaStock.put("stock", stock - quantity);
+                db.update("Products", updaStock, "id=?", new String[]{String.valueOf(productId)});
                 db.setTransactionSuccessful();
             }
             return true;
@@ -170,9 +170,10 @@ public class UserDAO {
         cursor.close();
         return user;
     }
+
     public String getUserRole(int userId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String role =null;
+        String role = null;
         Cursor cursor = db.rawQuery("SELECT role FROM Users WHERE id = ?", new String[]{String.valueOf(userId)});
         if (cursor.moveToFirst()) {
             role = cursor.getString(0);
@@ -180,6 +181,7 @@ public class UserDAO {
         cursor.close();
         return role;
     }
+
     public boolean updateUserRole(int userId, String role) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
@@ -211,7 +213,7 @@ public class UserDAO {
                 String password = cursor.getString(2);
                 String email = cursor.getString(3);
                 String role = cursor.getString(4);
-                userList.add(new User(id, username,password, email, role));
+                userList.add(new User(id, username, password, email, role));
             } while (cursor.moveToNext());
         }
 
@@ -219,6 +221,7 @@ public class UserDAO {
         db.close();
         return userList;
     }
+
     public boolean registerUser(String name, String password, String email) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();

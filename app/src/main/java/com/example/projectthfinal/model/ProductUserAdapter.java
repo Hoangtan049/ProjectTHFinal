@@ -61,6 +61,8 @@ public class ProductUserAdapter extends RecyclerView.Adapter<ProductUserAdapter.
                 UserDAO userDAO = new UserDAO(context);
                 boolean isOrderCreate= userDAO.creatOrder(userId,products.getId(),1,products.getPrice());
                 if (isOrderCreate){
+                    products.setStock(products.getStock() - 1);
+                    notifyItemChanged(holder.getAdapterPosition());
                     Toast.makeText(context, "Mua hàng thành công chờ duyệt đơn hàng", Toast.LENGTH_LONG).show();
 
                 }

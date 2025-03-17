@@ -67,7 +67,7 @@ public class CreateProductActivity extends AppCompatActivity {
                 String Des = edtCreateDes.getText().toString().trim();
                 double price = Double.parseDouble(edtCreatePrice.getText().toString().trim());
                 int stock = Integer.parseInt(edtCreateStock.getText().toString().trim());
-//                String categoryName =spnCate.getSelectedItem().toString();
+                String categoryName =spnCate.getSelectedItem().toString();
                 int selectedCategoryId = categories.get(spnCate.getSelectedItemPosition()).getId();
                 if (imageUri  == null) {
                     Toast.makeText(CreateProductActivity.this, "Vui lòng chọn hình ảnh!", Toast.LENGTH_SHORT).show();
